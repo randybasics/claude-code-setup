@@ -32,6 +32,18 @@ If you can't restate it crisply, the plan is too vague to review — say so and 
 | **Edge cases** | Empty input, nulls, concurrency, failure mid-operation, rollback path |
 | **Altitude** | Is the fix at the right depth, or a bandaid layered on shared infra? |
 
+### 2.5 Database change gate (conditional — Principal DBA + Sr. Data Engineer)
+
+If the plan touches the data layer — a table/column/type, a migration, RLS/grants/roles, an
+index/view/trigger/function, a new query or ORM model, or a backfill — a dedicated Principal DBA +
+Sr. Data Engineer review is **required** in addition to the five lenses. Read
+[`references/dba-review.md`](references/dba-review.md) and produce its `## Database Architecture
+Review` section, covering BOTH the overall database architecture the change lands on AND the
+specific changes, with its own DB verdict (APPROVE / APPROVE WITH FIXES / BLOCK). Run it as its own
+independent subagent when orchestrated; inline as a distinct section under a hard persona switch
+otherwise. No DB changes → record "No DB changes — DBA review skipped" and continue. A BLOCK caps
+the overall verdict at SHIP WITH FIXES or lower.
+
 ### 3. Give a verdict
 
 One of:
