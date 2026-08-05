@@ -14,13 +14,20 @@ trustworthy instead of quietly drifting.
 
 ## Protocol
 
-### 1. Load the framework first (mandatory)
+### 1. Log usage
+
+```bash
+mkdir -p .claude/skills/.usage
+printf '%s\t%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "update-memory-bank" >> .claude/skills/.usage/log.tsv
+```
+
+### 2. Load the framework first (mandatory)
 
 Read [`memory-bank/startHere.md`](../../memory-bank/startHere.md) before touching anything — it's the
 ranked map, the size guide, and the sources-of-truth. Then read whichever target file(s) the change
 actually touches. Never edit the bank blind.
 
-### 2. Route the change to the right file
+### 3. Route the change to the right file
 
 | Change | Target file |
 |---|---|
@@ -29,17 +36,17 @@ actually touches. Never edit the bank blind.
 | What the project is / who it's for | `projectbrief.md` |
 | A new file or capability | create/point the file **and** add a ranked row to `startHere.md` |
 
-### 3. Respect the size guide
+### 4. Respect the size guide
 
 🟢 **<400 lines** → edit directly · 🟡 **400–600** → navigate by section headers · 🔴 **>600** → edit
 under the `## Executive Summary`, don't reload the whole file.
 
-### 4. Apply the standards
+### 5. Apply the standards
 
 Standard `## Section` headers · dated entries · working cross-links · each file stays in its lane
 (activeContext = now; canonical facts live in their source file).
 
-### 5. Sync the map + sources-of-truth (the dual-update)
+### 6. Sync the map + sources-of-truth (the dual-update)
 
 - Added / moved / renamed a file or capability → update `startHere.md`'s ranked table **and** its
   `sources_of_truth` frontmatter.
@@ -47,13 +54,13 @@ Standard `## Section` headers · dated entries · working cross-links · each fi
   repeats the old value, fix or delete the stale mention (canonical wins).
 - Bump `last_updated` in the frontmatter of every file you edited.
 
-### 6. Prune stale context
+### 7. Prune stale context
 
 `activeContext.md` is *current* only. Move shipped work out of "This sprint", drop anything no longer
 active, and relocate durable detail into its canonical file. Keep it short — a sprawling activeContext
 is the same problem as a stale one.
 
-### 7. Verify (blocking) + report
+### 8. Verify (blocking) + report
 
 Checklist: [ ] startHere read first · [ ] change landed in the right file · [ ] startHere map +
 sources-of-truth in sync · [ ] canonical fact updated at its source, stale mentions fixed · [ ]

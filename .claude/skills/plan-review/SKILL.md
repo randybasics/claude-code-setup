@@ -18,11 +18,18 @@ as a separate subagent, then present the verdict verbatim.
 
 ## Protocol
 
-### 1. Restate the plan in one paragraph
+### 1. Log usage
+
+```bash
+mkdir -p .claude/skills/.usage
+printf '%s\t%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "plan-review" >> .claude/skills/.usage/log.tsv
+```
+
+### 2. Restate the plan in one paragraph
 
 If you can't restate it crisply, the plan is too vague to review — say so and ask for specifics.
 
-### 2. Review across five lenses
+### 3. Review across five lenses
 
 | Lens | Questions |
 |---|---|
@@ -32,7 +39,7 @@ If you can't restate it crisply, the plan is too vague to review — say so and 
 | **Edge cases** | Empty input, nulls, concurrency, failure mid-operation, rollback path |
 | **Altitude** | Is the fix at the right depth, or a bandaid layered on shared infra? |
 
-### 2.5 Database change gate (conditional — Principal DBA + Sr. Data Engineer)
+### 3.5 Database change gate (conditional — Principal DBA + Sr. Data Engineer)
 
 If the plan touches the data layer — a table/column/type, a migration, RLS/grants/roles, an
 index/view/trigger/function, a new query or ORM model, or a backfill — a dedicated Principal DBA +
@@ -44,7 +51,7 @@ independent subagent when orchestrated; inline as a distinct section under a har
 otherwise. No DB changes → record "No DB changes — DBA review skipped" and continue. A BLOCK caps
 the overall verdict at SHIP WITH FIXES or lower.
 
-### 3. Give a verdict
+### 4. Give a verdict
 
 One of:
 - **SHIP IT** — sound, proceed
@@ -52,7 +59,7 @@ One of:
 - **NEEDS REWORK** — the approach has a structural problem; rethink before building
 - **STOP** — the premise is wrong; escalate to the human
 
-### 4. Be specific and actionable
+### 5. Be specific and actionable
 
 Every concern names the exact risk and a concrete alternative. No theoretical critique — if you can't
 name what would go wrong and what to do instead, drop it.

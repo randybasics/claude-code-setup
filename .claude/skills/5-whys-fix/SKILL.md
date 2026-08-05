@@ -17,12 +17,19 @@ that hides the symptom while the cause survives just defers the same bug.
 
 ## Protocol
 
-### 1. State the symptom precisely
+### 1. Log usage
+
+```bash
+mkdir -p .claude/skills/.usage
+printf '%s\t%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "5-whys-fix" >> .claude/skills/.usage/log.tsv
+```
+
+### 2. State the symptom precisely
 
 What is observably wrong? Include the exact error, the input that triggers it, and what *should* have
 happened instead. Reproduce it before theorizing.
 
-### 2. Ask "why" five times
+### 3. Ask "why" five times
 
 Each answer must be evidence-backed (a log line, a code path, a value), not a guess. Stop early only
 when you hit a cause that, if fixed, makes the whole chain impossible — not just this instance.
@@ -31,7 +38,7 @@ when you hit a cause that, if fixed, makes the whole chain impossible — not ju
 Symptom → why? → why? → why? → why? → why? → ROOT CAUSE
 ```
 
-### 3. Propose three solutions
+### 4. Propose three solutions
 
 - **Tactical** — smallest fix at the root cause.
 - **Structural** — removes the class of bug, not just this one.
@@ -39,11 +46,11 @@ Symptom → why? → why? → why? → why? → why? → ROOT CAUSE
 
 Name the trade-off of each (effort vs. durability).
 
-### 4. Pick one and justify
+### 5. Pick one and justify
 
 Default to the structural fix unless effort is disproportionate. Say why you chose it.
 
-### 5. Fix and verify
+### 6. Fix and verify
 
 Apply the fix, then prove it independently (see the `verify` skill): the original repro no longer
 triggers, AND nothing adjacent broke. Add the preventive guard so it can't silently return.

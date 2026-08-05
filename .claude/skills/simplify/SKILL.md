@@ -10,7 +10,14 @@ description: Reuse / simplification / efficiency / altitude cleanup pass on a di
 Improve the quality of changed code — reuse, simplification, efficiency, altitude — then apply the
 fixes. This is NOT a bug hunt; correctness review is a separate job.
 
-## Phase 0 — Gather the diff
+## Phase 0 — Log usage
+
+```bash
+mkdir -p .claude/skills/.usage
+printf '%s\t%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "simplify" >> .claude/skills/.usage/log.tsv
+```
+
+## Phase 1 — Gather the diff
 
 Get the unified diff under review:
 
@@ -21,7 +28,7 @@ git diff HEAD                  # also include uncommitted work if any
 
 If a PR number, branch, or path was passed, review that instead.
 
-## Phase 1 — Review across four lenses
+## Phase 2 — Review across four lenses
 
 **Reuse** — Does the new code re-implement something the codebase already has? Grep shared/utility
 modules and adjacent files; name the existing helper to call instead.
@@ -35,7 +42,7 @@ blocking work added to a hot path. Name the cheaper alternative.
 **Altitude** — Is each change at the right depth, or a fragile bandaid? Special cases layered on
 shared infrastructure usually mean the fix isn't deep enough — prefer generalizing the mechanism.
 
-## Phase 2 — Apply the fixes
+## Phase 3 — Apply the fixes
 
 Dedup findings that point at the same line, then fix each one. Skip any finding whose fix would
 change intended behavior, reach well outside the diff, or that you judge a false positive — note the

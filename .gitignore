@@ -1,6 +1,7 @@
 # Local, machine-specific Claude Code settings — never commit
 .claude/settings.local.json
 .claude/worktrees/
+.claude/skills/.usage/
 CLAUDE.local.md
 
 # Environment / secrets
